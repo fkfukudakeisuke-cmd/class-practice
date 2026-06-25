@@ -3,12 +3,9 @@
 require_once 'Dbc.php';
 require_once 'User.php';
 
+$user = new User();
 
-$dbc = new Dbc();
-$pdo = $dbc->db();
-
-$user= new User($pdo);
-$users= $user->all();
+$users = $user->all();
 
 ?>
 <!DOCTYPE html>

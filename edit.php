@@ -3,12 +3,8 @@
 require_once 'Dbc.php';
 require_once 'User.php';
 
-//インスタンス化
-$dbc = new Dbc();
-//データベース接続メソッドを実行
-$pdo = $dbc->db();
 
-$user = new User($pdo);
+$user = new User();
 
 $id = $_GET['id'];
 $edituser = $user->find($id);

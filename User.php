@@ -1,19 +1,22 @@
 <?php
 
+require_once 'Dbc.php';
 
-class User {
-    private $pdo;
-
-    public function __construct($pdo)
+class User extends Dbc
+{
+    // 親クラスのコンストラクタを実行
+    public function __construct()
     {
-        $this->pdo = $pdo;
+        parent::__construct();
     }
-    //create
-    public function create($name,$email,$password)
-    {
-        $sql = "INSERT INTO users(name,email,password) VALUES(?,?,?)";
 
-        $stmt = $this->pdo->prepare($sql);
+    // create
+    public function create($name, $email, $password)
+    {
+        $sql = "INSERT INTO users(name,email,password)
+                VALUES(?,?,?)";
+
+        $stmt = $this->prepare($sql);
 
         $stmt->execute([
             $name,
@@ -21,45 +24,52 @@ class User {
             $password
         ]);
     }
-    //read
+
+    // read
     public function all()
     {
         $sql = "SELECT * FROM users";
 
-        $stmt = $this->pdo->query($sql);
+        $stmt = $this->query($sql);
+
         return $stmt->fetchAll();
     }
-    //編集画面のメソッド
-    public function find($id) 
+
+    // find
+    public function find($id)
     {
         $sql = "SELECT * FROM users WHERE id = ?";
 
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $this->prepare($sql);
 
         $stmt->execute([$id]);
 
         return $stmt->fetch();
     }
 
-    //update
-    public function update($name,$email,$id)
+    // update
+    public function update($name, $email, $id)
     {
-        //SQLを実施
-        $sql = "UPDATE users SET name = ?, email = ? WHERE id = ? ";
+        $sql = "UPDATE users
+                SET name = ?, email = ?
+                WHERE id = ?";
 
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $this->prepare($sql);
 
-        //実行
-        $stmt->execute([$name, $email, $id]);
+        $stmt->execute([
+            $name,
+            $email,
+            $id
+        ]);
     }
 
-    //delete
-    public function delete($id)  
+    // delete
+    public function delete($id)
     {
         $sql = "DELETE FROM users WHERE id = ?";
-        $stmt = $this->pdo->prepare($sql);
-        
-        //実行
+
+        $stmt = $this->prepare($sql);
+
         $stmt->execute([$id]);
     }
 }

@@ -3,16 +3,21 @@
 require_once 'Dbc.php';
 require_once 'User.php';
 
-$dbc = new Dbc();
-$pdo = $dbc->db();
+try{
+    $update_User = new User;
 
-$update_User = new User($pdo);
+    $id = $_POST['id'];
+    $name = $_POST['name'];
+    $email = $_POST['email'];
 
-$id = $_POST['id'];
-$name = $_POST['name'];
-$email = $_POST['email'];
+    $update_User->update($name, $email, $id);
 
-$update_User->update($name, $email, $id);
+    header('Location: index.php');
+    exit;
 
-header('Location: index.php');
-exit;
+}
+catch(PDOException $e)
+{
+    echo "エラー".$e->getMessage();
+}
+

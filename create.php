@@ -5,13 +5,9 @@ require_once 'User.php';
 
 try {
 
-    // DB接続
-    $dbc = new Dbc();
-    $pdo = $dbc->db();
+    $user = new User();
 
-    // Userクラス生成
-    $user = new User($pdo);
-
+    
     // フォームデータ取得
     $name = $_POST['name'];
     $email = $_POST['email'];
