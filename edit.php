@@ -3,14 +3,10 @@
 require_once 'Dbc.php';
 require_once 'User.php';
 
-
 $user = new User();
 
 $id = $_GET['id'];
 $edituser = $user->find($id);
-
-
-
 
 ?>
 

@@ -1,75 +1,45 @@
 <?php
+// User.php — usersテーブルのCRUDだけ
 
 require_once 'Dbc.php';
 
 class User extends Dbc
 {
-    // 親クラスのコンストラクタを実行
-    public function __construct()
+    public function create($name,$email,$password)
     {
-        parent::__construct();
+        $sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+        return $this->execute(
+            $sql,
+            [$name, $email, $password]
+        );
     }
 
-    // create
-    public function create($name, $email, $password)
-    {
-        $sql = "INSERT INTO users(name,email,password)
-                VALUES(?,?,?)";
-
-        $stmt = $this->prepare($sql);
-
-        $stmt->execute([
-            $name,
-            $email,
-            $password
-        ]);
-    }
-
-    // read
     public function all()
+
     {
         $sql = "SELECT * FROM users";
-
-        $stmt = $this->query($sql);
-
-        return $stmt->fetchAll();
+        return $this->selectAll($sql);
     }
 
-    // find
-    public function find($id)
+    public function find(int $id)
+    
     {
         $sql = "SELECT * FROM users WHERE id = ?";
-
-        $stmt = $this->prepare($sql);
-
-        $stmt->execute([$id]);
-
-        return $stmt->fetch();
+        return $this->selectOne( $sql,[$id]);
     }
 
-    // update
-    public function update($name, $email, $id)
+    public function update($id,$name,$email)
     {
-        $sql = "UPDATE users
-                SET name = ?, email = ?
-                WHERE id = ?";
-
-        $stmt = $this->prepare($sql);
-
-        $stmt->execute([
-            $name,
-            $email,
-            $id
-        ]);
+        $sql =  "UPDATE users SET name = ?, email = ? WHERE id = ?";
+        return $this->execute(
+           $sql,
+            [$name, $email, $id]
+        );
     }
 
-    // delete
     public function delete($id)
     {
         $sql = "DELETE FROM users WHERE id = ?";
-
-        $stmt = $this->prepare($sql);
-
-        $stmt->execute([$id]);
+        return $this->execute($sql, [$id]);
     }
 }

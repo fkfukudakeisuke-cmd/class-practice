@@ -1,35 +1,37 @@
 <?php
+// Dbc.php
 
 class Dbc
 {
-    protected $pdo;
+    private $pdo;
 
     public function __construct()
     {
-        $host = 'localhost';
-        $dbname = 'program';
-        $user = 'root';
-        $password = '';
-
         $this->pdo = new PDO(
-            "mysql:host=$host;dbname=$dbname;charset=utf8",
-            $user,
-            $password
+            "mysql:host=localhost;dbname=program;charset=utf8",
+            'root',
+            '',
+            [PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION]
         );
+    }
 
-        $this->pdo->setAttribute(
-            PDO::ATTR_ERRMODE,
-            PDO::ERRMODE_EXCEPTION
-        );
-    }
-    //prepareメソッドを追加
-    public function prepare($sql)
+    protected function selectAll($sql,$params = [])
     {
-        return $this->pdo->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
-    public function query($sql)
+
+    protected function selectOne($sql, $params = [])
     {
-        return $this->pdo->query($sql);
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    protected function execute($sql,$params = [])
+    {
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute($params);
     }
 }

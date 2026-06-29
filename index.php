@@ -3,10 +3,13 @@
 require_once 'Dbc.php';
 require_once 'User.php';
 
-$user = new User();
-
-$users = $user->all();
-
+try{
+     $user = new User();
+     $users = $user->all();
+} catch (PDOException $e)
+ {
+    echo "エラー" . $e->getMessage();
+ }
 ?>
 <!DOCTYPE html>
 <html lang="ja">
