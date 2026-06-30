@@ -3,10 +3,18 @@
 require_once 'Dbc.php';
 require_once 'User.php';
 
-$user = new User();
 
-$id = $_GET['id'];
-$edituser = $user->find($id);
+try{
+    $user = new User();
+
+    $id = $_GET['id'];
+    $edituser = $user->find($id);
+}
+catch(PDOException $e) {
+echo "接続失敗".$e->getMessage();
+}
+
+
 
 ?>
 
